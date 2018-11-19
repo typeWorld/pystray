@@ -4,7 +4,7 @@
 #
 # This program is free software: you can redistribute it and/or modify it under
 # the terms of the GNU Lesser General Public License as published by the Free
-# Software Foundation, either version 3 of the License, or (at your option) any
+# Software AppKit, either version 3 of the License, or (at your option) any
 # later version.
 #
 # This program is distributed in the hope that it will be useful, but WITHOUT
@@ -15,13 +15,12 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import io
+# import io
 import signal
 
 import AppKit
-import Foundation
 import objc
-import PIL
+# import PIL
 import  PyObjCTools.MachSignals
 
 from . import _base
@@ -140,27 +139,29 @@ class Icon(_base.Icon):
     def _assert_image(self):
         """Asserts that the cached icon image exists.
         """
-        thickness = self._status_bar.thickness()
-        size = (int(thickness), int(thickness))
-        if self._icon_image and self._icon_image.size() == size:
-            return
+        # thickness = self._status_bar.thickness()
+        # size = (int(thickness), int(thickness))
+        # if self._icon_image and self._icon_image.size() == size:
+        #     return
 
-        if self._icon.size == size:
-            source = self._icon
-        else:
-            source = PIL.Image.new(
-                'RGBA',
-                size)
-            source.paste(self._icon.resize(
-                size,
-                PIL.Image.ANTIALIAS))
+        # if self._icon.size == size:
+        #     source = self._icon
+        # else:
+        #     source = PIL.Image.new(
+        #         'RGBA',
+        #         size)
+        #     source.paste(self._icon.resize(
+        #         size,
+        #         PIL.Image.ANTIALIAS))
 
-        # Convert the PIL image to an NSImage
-        b = io.BytesIO()
-        source.save(b, 'png')
-        data = Foundation.NSData(b.getvalue())
+        # # Convert the PIL image to an NSImage
+        # b = io.BytesIO()
+        # source.save(b, 'png')
+        # data = AppKit.NSData(b.getvalue())
 
-        self._icon_image = AppKit.NSImage.alloc().initWithData_(data)
+        # self._icon_image = AppKit.NSImage.alloc().initWithData_(data)
+
+        self._icon_image = self._icon
         self._status_item.button().setImage_(self._icon_image)
 
     def _create_menu(self, descriptors, callbacks):
@@ -220,10 +221,10 @@ class Icon(_base.Icon):
             menu_item.setTag_(len(callbacks))
             if descriptor.default:
                 menu_item.setAttributedTitle_(
-                    Foundation.NSAttributedString.alloc()
+                    AppKit.NSAttributedString.alloc()
                     .initWithString_attributes_(
                         descriptor.text,
-                        Foundation.NSDictionary.alloc()
+                        AppKit.NSDictionary.alloc()
                         .initWithObjectsAndKeys_(
                             AppKit.NSFont.boldSystemFontOfSize_(
                                 AppKit.NSFont.menuFontOfSize_(0)
@@ -237,7 +238,7 @@ class Icon(_base.Icon):
             return menu_item
 
 
-class IconDelegate(Foundation.NSObject):
+class IconDelegate(AppKit.NSObject):
     @objc.namedSelector(Icon._ACTION_SELECTOR)
     def activate_button(self, sender):
         self.icon()

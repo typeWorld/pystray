@@ -35,22 +35,22 @@ try:
         if not Icon:
             from ._win32 import Icon
 
-    else:
-        try:
-            if not Icon:
-                from ._appindicator import Icon
-        except Exception as e:
-            error = e
-        try:
-            if not Icon:
-                from ._gtk import Icon
-        except Exception as e:
-            error = e
-        try:
-            if not Icon:
-                from ._xorg import Icon
-        except Exception as e:
-            error = e
+    # else:
+    #     try:
+    #         if not Icon:
+    #             from ._appindicator import Icon
+    #     except Exception as e:
+    #         error = e
+    #     try:
+    #         if not Icon:
+    #             from ._gtk import Icon
+    #     except Exception as e:
+    #         error = e
+    #     try:
+    #         if not Icon:
+    #             from ._xorg import Icon
+    #     except Exception as e:
+    #         error = e
 
 
     if not Icon:

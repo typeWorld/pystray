@@ -321,6 +321,14 @@ class Icon(_base.Icon):
         if self._icon_handle:
             return
 
+        self._icon_handle = self.icon
+
+    def __assert_icon_handle(self):
+        """Asserts that the cached icon handle exists.
+        """
+        if self._icon_handle:
+            return
+
         with serialized_image(self.icon, 'ICO') as icon_path:
             self._icon_handle = win32.LoadImage(
                 None,
