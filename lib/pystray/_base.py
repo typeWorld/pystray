@@ -161,7 +161,7 @@ class Icon(object):
             self._hide()
             self._visible = False
 
-    def run(self, setup=None):
+    def run(self, setup=None, sigint=None):
         """Enters the loop handling events for the icon.
 
         This method is blocking until :meth:`stop` is called. It *must* be
@@ -186,6 +186,14 @@ class Icon(object):
         self._setup_thread.start()
         self._run()
         self._running = True
+
+        if sigint:
+            import signal
+
+            signal.signal(signal.SIGBREAK, sigint)
+            signal.signal(signal.SIGTERM, sigint)
+            signal.signal(signal.SIGINT, sigint)
+            
 
     def stop(self):
         """Stops the loop handling events for the icon.
